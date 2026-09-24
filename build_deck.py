@@ -51,7 +51,7 @@ def main():
          "Buy from one shop today. Show that receipt at the other shop. Get a discount. Both businesses grow.",
          size=18)
     s1.shapes.add_picture(os.path.join(ROOT, "photos/leafy-brew.jpg"), Inches(0.55), Inches(2.35), Inches(6.0), Inches(4.15))
-    s1.shapes.add_picture(os.path.join(ROOT, "photos/action-pro.jpg"), Inches(6.8), Inches(2.35), Inches(6.0), Inches(4.15))
+    s1.shapes.add_picture(os.path.join(ROOT, "photos/action-pro-interior.jpg"), Inches(6.8), Inches(2.35), Inches(6.0), Inches(4.15))
     text(s1, 0.55, 6.6, 5.5, 0.55, "Leafy Brew\nCoffee & Positivitea Company", size=14, bold=True)
     text(s1, 6.8, 6.6, 5.5, 0.55, "Action Pro\nLifestyle and fashion store", size=14, bold=True)
 
