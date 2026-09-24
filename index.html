@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Action Pro × Leafy Brew</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --ink: #1c1917;
+        --muted: #5c554e;
+        --cream: #f6f1e8;
+        --green: #1e3a30;
+        --gold: #c6a15b;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        height: 100%;
+        background: #14110e;
+        font-family: Outfit, "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+        color: var(--ink);
+      }
+      button { font-family: inherit; cursor: pointer; }
+      #viewport { position: fixed; inset: 0; }
+      #deck {
+        position: absolute;
+        width: 1920px;
+        height: 1080px;
+        transform-origin: top left;
+      }
+      .slide {
+        position: absolute;
+        inset: 0;
+        display: none;
+        background: var(--cream);
+        padding: 64px 80px 56px;
+      }
+      .slide.on { display: block; }
+      .kicker {
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        font-size: 15px;
+        color: #6b4a32;
+        margin: 0;
+      }
+      h1 {
+        font-family: "Cormorant Garamond", Palatino, Georgia, serif;
+        font-weight: 500;
+        font-size: 72px;
+        line-height: 0.95;
+        margin: 12px 0 0;
+      }
+      .lead {
+        margin: 18px 0 0;
+        font-size: 26px;
+        font-weight: 300;
+        max-width: 980px;
+        line-height: 1.35;
+      }
+      .shops {
+        margin-top: 36px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+      }
+      figure { margin: 0; }
+      figure img {
+        width: 100%;
+        height: 520px;
+        object-fit: cover;
+        border-radius: 18px;
+        display: block;
+      }
+      figcaption {
+        margin-top: 14px;
+        font-size: 22px;
+        font-weight: 500;
+      }
+      figcaption span {
+        display: block;
+        margin-top: 2px;
+        font-weight: 300;
+        font-size: 16px;
+        color: var(--muted);
+      }
+      .paths {
+        margin-top: 42px;
+        display: grid;
+        grid-template-columns: 1fr 80px 1fr;
+        gap: 10px;
+        align-items: stretch;
+      }
+      .path {
+        background: white;
+        border-radius: 22px;
+        padding: 36px 40px 32px;
+        box-shadow: 0 18px 40px rgba(20, 17, 14, 0.08);
+      }
+      .path img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 14px;
+      }
+      .trio {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+      }
+      .trio img {
+        height: 220px;
+        border-radius: 10px;
+      }
+      .path h2 {
+        font-family: "Cormorant Garamond", Palatino, Georgia, serif;
+        font-weight: 500;
+        font-size: 40px;
+        margin: 22px 0 8px;
+      }
+      .path ol {
+        margin: 18px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .path li {
+        display: grid;
+        grid-template-columns: 36px 1fr;
+        gap: 10px;
+        padding: 12px 0;
+        border-top: 1px solid rgba(198, 161, 91, 0.45);
+        font-size: 22px;
+        font-weight: 300;
+      }
+      .path li b {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 26px;
+        font-weight: 500;
+        color: var(--gold);
+      }
+      .save {
+        margin-top: 16px;
+        background: var(--green);
+        color: #f6f1e8;
+        border-radius: 14px;
+        padding: 16px 18px;
+        font-size: 26px;
+        font-weight: 500;
+      }
+      .mid {
+        display: grid;
+        place-items: center;
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 54px;
+        color: var(--gold);
+      }
+      .note {
+        margin-top: 28px;
+        font-size: 24px;
+        font-weight: 300;
+      }
+      .why {
+        margin-top: 36px;
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 28px;
+        align-items: stretch;
+      }
+      .points { display: flex; flex-direction: column; gap: 16px; }
+      .point {
+        background: white;
+        border-radius: 20px;
+        padding: 26px 30px 24px;
+        box-shadow: 0 18px 40px rgba(20, 17, 14, 0.08);
+      }
+      .point h2 {
+        margin: 0;
+        font-family: "Cormorant Garamond", Palatino, Georgia, serif;
+        font-weight: 500;
+        font-size: 36px;
+      }
+      .point p {
+        margin: 8px 0 0;
+        font-size: 22px;
+        font-weight: 300;
+        line-height: 1.4;
+        color: var(--muted);
+      }
+      .gallery .wide {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 16px;
+        display: block;
+      }
+      .gallery .pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 10px;
+      }
+      .gallery .pair img {
+        width: 100%;
+        height: 210px;
+        object-fit: cover;
+        border-radius: 14px;
+        display: block;
+      }
+      .pager {
+        position: absolute;
+        left: 80px;
+        bottom: 28px;
+        z-index: 3;
+        display: flex;
+        gap: 12px;
+      }
+      .pager button {
+        min-width: 148px;
+        height: 48px;
+        border-radius: 999px;
+        border: 1px solid #1c1917;
+        background: white;
+        color: #1c1917;
+        font-size: 16px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .pager button.on {
+        background: #1e3a30;
+        color: #f6f1e8;
+        border-color: #1e3a30;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="viewport">
+      <div id="deck">
+        <section class="slide on" id="page1">
+          <p class="kicker">Partnership</p>
+          <h1>Action Pro × Leafy Brew</h1>
+          <p class="lead">Buy from one shop today. Show that receipt at the other shop. Get a discount. Both businesses grow.</p>
+          <div class="shops">
+            <figure>
+              <img src="photos/leafy-brew.jpg" alt="Leafy Brew Coffee storefront" />
+              <figcaption>Leafy Brew<span>Coffee &amp; Positivitea Company</span></figcaption>
+            </figure>
+            <figure>
+              <img src="photos/action-pro.jpg" alt="Action Pro storefront" />
+              <figcaption>Action Pro<span>Lifestyle and fashion store</span></figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="slide" id="page2">
+          <p class="kicker">How it works</p>
+          <h1>Same day. Show the receipt.</h1>
+          <div class="paths">
+            <article class="path">
+              <img src="photos/leafy-brew.jpg" alt="Leafy Brew" />
+              <h2>Buy at Leafy Brew</h2>
+              <ol>
+                <li><b>1</b> Buy something at Leafy Brew.</li>
+                <li><b>2</b> Show today’s invoice at Action Pro.</li>
+              </ol>
+              <div class="save">Get X% off at Action Pro</div>
+            </article>
+            <div class="mid">+</div>
+            <article class="path">
+              <div class="trio">
+                <img src="photos/action-pro-floor.jpg" alt="Clothing and lifestyle products at Action Pro" />
+                <img src="photos/action-pro-makeup.jpg" alt="Makeup at Action Pro" />
+                <img src="photos/action-pro-racks.jpg" alt="Fashion and home products at Action Pro" />
+              </div>
+              <h2>Buy at Action Pro</h2>
+              <ol>
+                <li><b>1</b> Buy something at Action Pro.</li>
+                <li><b>2</b> Show today’s invoice at Leafy Brew.</li>
+              </ol>
+              <div class="save">Get X% off at Leafy Brew</div>
+            </article>
+          </div>
+          <p class="note">The receipt has to be from the same day. That is the whole partnership.</p>
+        </section>
+
+        <section class="slide" id="page3">
+          <p class="kicker">For Leafy Brew</p>
+          <h1>Your customers get more than coffee.</h1>
+          <p class="lead">A Leafy Brew customer can take today’s receipt to Action Pro, get a discount, and shop.</p>
+          <div class="why">
+            <div class="points">
+              <article class="point">
+                <h2>A discount</h2>
+                <p>They buy at Leafy Brew, show the same-day receipt at Action Pro, and get X% off.</p>
+              </article>
+              <article class="point">
+                <h2>A shopping experience</h2>
+                <p>Action Pro is a lifestyle and fashion store. Clothes, style, and everyday pieces, on the same day.</p>
+              </article>
+              <article class="point">
+                <h2>A stronger reason to visit</h2>
+                <p>Leafy Brew offers more than the cup. Guests leave with a discount and a place to shop.</p>
+              </article>
+            </div>
+            <figure class="gallery">
+              <img class="wide" src="photos/action-pro-floor.jpg" alt="Clothing and lifestyle products at Action Pro" />
+              <div class="pair">
+                <img src="photos/action-pro-makeup.jpg" alt="Makeup at Action Pro" />
+                <img src="photos/action-pro-racks.jpg" alt="Fashion and home products at Action Pro" />
+              </div>
+              <figcaption>Action Pro<span>Lifestyle and fashion store</span></figcaption>
+            </figure>
+          </div>
+        </section>
+        <div class="pager">
+          <button type="button" id="btn1" class="on">Page 1</button>
+          <button type="button" id="btn2">Page 2</button>
+          <button type="button" id="btn3">Page 3</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const slides = [document.getElementById("page1"), document.getElementById("page2"), document.getElementById("page3")];
+      const buttons = [document.getElementById("btn1"), document.getElementById("btn2"), document.getElementById("btn3")];
+      let current = 0;
+      function show(i) {
+        current = (i + slides.length) % slides.length;
+        slides.forEach((s, n) => s.classList.toggle("on", n === current));
+        buttons.forEach((b, n) => b.classList.toggle("on", n === current));
+      }
+      buttons.forEach((b, i) => b.addEventListener("click", () => show(i)));
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") show(current + 1);
+        if (e.key === "ArrowLeft") show(current - 1);
+        if (e.key === "1") show(0);
+        if (e.key === "2") show(1);
+        if (e.key === "3") show(2);
+      });
+      function fit() {
+        const availH = window.innerHeight;
+        const scale = Math.min(window.innerWidth / 1920, availH / 1080);
+        const deck = document.getElementById("deck");
+        deck.style.transform = `translate(${(window.innerWidth - 1920 * scale) / 2}px, ${(availH - 1080 * scale) / 2}px) scale(${scale})`;
+      }
+      window.addEventListener("resize", fit);
+      fit();
+      show(0);
+    </script>
+  </body>
+</html>
